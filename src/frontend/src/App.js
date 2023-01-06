@@ -9,7 +9,7 @@ import {
     Empty,
     Button,
     Badge, Tag, Avatar,
-    Popconfirm, Radio, Divider
+    Popconfirm, Radio
 } from 'antd';
 import {
     DesktopOutlined,
