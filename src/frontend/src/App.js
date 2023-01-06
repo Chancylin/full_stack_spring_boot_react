@@ -9,7 +9,7 @@ import {
     Empty,
     Button,
     Badge, Tag, Avatar,
-    Popconfirm, Radio
+    Popconfirm, Radio, Divider
 } from 'antd';
 import {
     DesktopOutlined,
@@ -226,7 +226,17 @@ function App() {
                     {renderStudents()}
                 </div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>By ChuangxinLin</Footer>
+            <Footer style={{ textAlign: 'center' }}>
+                By ChuangxinLin
+                <Divider>
+                    <a
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        href="https://www.chuangxinlin.com/">
+                        Learn more about me
+                    </a>
+                </Divider>
+            </Footer>
         </Layout>
     </Layout>
 }
