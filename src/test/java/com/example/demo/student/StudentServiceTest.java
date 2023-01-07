@@ -1,6 +1,7 @@
 package com.example.demo.student;
 
 import com.example.demo.student.exception.BadRequestException;
+import com.example.demo.student.exception.StudentNotFoundException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -79,7 +80,43 @@ class StudentServiceTest {
     }
 
     @Test
-    @Disabled
-    void deleteStudent() {
+    void canDeleteStudent() {
+        // given
+        long studentId = 111;
+
+        given(studentRepository.existsById(studentId)).willReturn(true);
+
+        // when
+        underTest.deleteStudent(studentId);
+
+        // then
+        // verify interaction with exact argument directly instead
+        // of using argument capture
+        verify(studentRepository)
+                .deleteById(studentId);
+//        ArgumentCaptor<Long> studentIdArgumentCaptor =
+//                ArgumentCaptor.forClass(Long.class);
+//
+//        verify(studentRepository)
+//                .deleteById(studentIdArgumentCaptor.capture()); // capture the passed value
+//
+//        Long capturedStudentId = studentIdArgumentCaptor.getValue();
+//        assertThat(capturedStudentId).isEqualTo(studentId); // check the values are the same
+    }
+
+    @Test
+    void willThrowWhenDeleteNotExistStudent() {
+        // given
+        long studentId = 111L;
+
+        given(studentRepository.existsById(studentId)).willReturn(false);
+
+        // when
+        // then
+        assertThatThrownBy(() -> underTest.deleteStudent(studentId))
+                .isInstanceOf(StudentNotFoundException.class)
+                .hasMessageContaining("Student with id " + studentId + " does not exists");
+
+        verify(studentRepository, never()).deleteById(any());
     }
 }
