@@ -17,6 +17,11 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public Student getStudent(Long studentId) {
+        return studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Student with id " + studentId + " does not exists"));
+    }
+
     public void addStudent(Student student) {
         // check if email is taken
         Boolean existsEmail = studentRepository.selectExistsEmail(student.getEmail());
@@ -24,6 +29,14 @@ public class StudentService {
             throw new BadRequestException("Email " + student.getEmail() + " taken");
         }
 
+        studentRepository.save(student);
+    }
+
+    public void updateStudent(Student student) {
+        // check if student exists
+        if (!studentRepository.existsById(student.getId())) {
+            throw new StudentNotFoundException("Student with id " + student.getId() + " does not exists");
+        }
         studentRepository.save(student);
     }
 
