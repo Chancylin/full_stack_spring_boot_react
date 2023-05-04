@@ -3,6 +3,7 @@ package com.example.demo.student;
 import com.example.demo.student.exception.BadRequestException;
 import com.example.demo.student.exception.StudentNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
 
     public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+        return studentRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public Student getStudent(Long studentId) {
@@ -37,6 +38,13 @@ public class StudentService {
         if (!studentRepository.existsById(student.getId())) {
             throw new StudentNotFoundException("Student with id " + student.getId() + " does not exists");
         }
+
+        Boolean emailTakenByOther = studentRepository.selectEmailTakenByOther(student.getEmail(), student.getId());
+
+        if (emailTakenByOther) {
+            throw new BadRequestException("Email " + student.getEmail() + " taken");
+        }
+
         studentRepository.save(student);
     }
 

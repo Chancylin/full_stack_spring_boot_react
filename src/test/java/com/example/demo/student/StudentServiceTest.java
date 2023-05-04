@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -31,7 +32,7 @@ class StudentServiceTest {
         // when
         underTest.getAllStudents();
         // then
-        verify(studentRepository).findAll();
+        verify(studentRepository).findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Test

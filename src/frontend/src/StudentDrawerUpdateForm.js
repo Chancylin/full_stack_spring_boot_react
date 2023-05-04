@@ -20,7 +20,7 @@ function StudentDrawerUpdateForm({showUpdateDrawer, setShowUpdateDrawer, fetchSt
     const onFinish = student => {
         setSubmitting(true);
         console.log(JSON.stringify(student, null, 2));
-        updateStudent(student)
+        updateStudent({...student, id:editingStudent.id})
             .then(() => {
                 console.log("student added");
                 onCLose();
