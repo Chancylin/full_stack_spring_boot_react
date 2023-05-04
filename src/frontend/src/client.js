@@ -24,6 +24,8 @@ export const addNewStudent = student =>
         }
     ).then(checkStatus);
 
+export const updateStudent = student => {};
+
 export const deleteStudent = studentId =>
     fetch(`api/v1/students/${studentId}`, {
         method: 'DELETE'
