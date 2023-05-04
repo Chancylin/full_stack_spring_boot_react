@@ -9,6 +9,9 @@ const {Option} = Select;
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
+
+    const [form] = Form.useForm();  // create a Form control instance
+
     const onCLose = () => setShowDrawer(false);
     const [submitting, setSubmitting] = useState(false);
     const onFinish = student => {
@@ -22,6 +25,7 @@ function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
                     "Student successfully added",
                     `${student.name} was added to the system`
                 );
+                form.resetFields();
                 fetchStudents();
             }).catch(err => {
                 console.log(err);
@@ -44,6 +48,7 @@ function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
     };
 
     return <Drawer
+        forceRender
         title="Create new student"
         width={720}
         onClose={onCLose}
@@ -62,6 +67,7 @@ function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
         }
     >
         <Form layout="vertical"
+              form={form}
               onFinishFailed={onFinishFailed}
               onFinish={onFinish}
               hideRequiredMark>
