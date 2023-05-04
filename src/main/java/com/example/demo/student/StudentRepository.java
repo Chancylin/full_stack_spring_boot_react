@@ -15,4 +15,13 @@ public interface StudentRepository
             "WHERE s.email = ?1"
     )
     Boolean selectExistsEmail(String email);
+
+    @Query("" +
+            "SELECT " +
+            "CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE " +
+            "END " +
+            "FROM Student s " +
+            "WHERE s.email = ?1 AND s.id <> ?2"
+    )
+    Boolean selectEmailTakenByOther(String email, Long studentId);
 }

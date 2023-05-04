@@ -1,31 +1,33 @@
 import {Drawer, Input, Col, Select, Form, Row, Button, Spin} from 'antd';
-import {addNewStudent} from "./client";
+import {updateStudent} from "./client";
 import {LoadingOutlined} from "@ant-design/icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {errorNotification, successNotification} from "./Notification";
 
 const {Option} = Select;
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
+function StudentDrawerUpdateForm({showUpdateDrawer, setShowUpdateDrawer, fetchStudents, editingStudent}) {
 
     const [form] = Form.useForm();  // create a Form control instance
+    useEffect(() => {
+        form.setFieldsValue(editingStudent)
+    }, [form, editingStudent]);
 
-    const onCLose = () => setShowDrawer(false);
+    const onCLose = () => setShowUpdateDrawer(false);
     const [submitting, setSubmitting] = useState(false);
     const onFinish = student => {
         setSubmitting(true);
         console.log(JSON.stringify(student, null, 2));
-        addNewStudent(student)
+        updateStudent({...student, id:editingStudent.id})
             .then(() => {
                 console.log("student added");
                 onCLose();
                 successNotification(
-                    "Student successfully added",
-                    `${student.name} was added to the system`
+                    "Student successfully updated",
+                    `${student.name} was updated to the system`
                 );
-                form.resetFields();
                 fetchStudents();
             }).catch(err => {
                 console.log(err);
@@ -47,12 +49,13 @@ function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
         alert(JSON.stringify(errorInfo, null, 2));
     };
 
+
     return <Drawer
         forceRender
-        title="Create new student"
+        title="Update student info"
         width={720}
         onClose={onCLose}
-        visible={showDrawer}
+        visible={showUpdateDrawer}
         bodyStyle={{paddingBottom: 80}}
         footer={
             <div
@@ -122,4 +125,4 @@ function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
     </Drawer>
 }
 
-export default StudentDrawerForm;
+export default StudentDrawerUpdateForm;

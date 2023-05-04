@@ -24,6 +24,7 @@ import {
 import './App.css';
 import StudentDrawerForm from "./StudentDrawerForm";
 import {errorNotification, successNotification} from "./Notification";
+import StudentDrawerUpdateForm from "./StudentDrawerUpdateForm";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -44,7 +45,7 @@ const TheAvatar = ({name}) => {
 
 const removeStudent = (studentId, callback) => {
     deleteStudent(studentId).then(() => {
-            successNotification("Student deleted", `Student with ${studentId} was deleted`);
+            successNotification("Student deleted", `Student with id ${studentId} was deleted`);
             callback();
         }
     ).catch(err => {
@@ -58,7 +59,8 @@ const removeStudent = (studentId, callback) => {
     })
 };
 
-const columns = fetchStudents => [
+const columns = (fetchStudents,
+                 showUpdateDrawer, setShowUpdateDrawer, setEditingStudent) => [
     {
         title: '',
         dataIndex: 'avatar',
@@ -98,7 +100,15 @@ const columns = fetchStudents => [
                             cancelText='No'>
                     <Radio.Button value="small">Delete</Radio.Button>
                 </Popconfirm>
-                <Radio.Button value="small">Edit</Radio.Button>
+                <Radio.Button
+                    value="small" onClick={() => {
+                        setShowUpdateDrawer(!showUpdateDrawer);
+                        setEditingStudent(student);
+                        console.log(student);
+                    }
+                }>
+                    Edit
+                </Radio.Button>
             </Radio.Group>
     }
 ];
@@ -117,6 +127,8 @@ function App() {
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [showDrawer, setShowDrawer] = useState(false);
+    const [showUpdateDrawer, setShowUpdateDrawer] = useState(false);
+    const [editingStudent, setEditingStudent] = useState(false);
 
     const fetchStudents = () =>
         getAllStudents()
@@ -141,6 +153,7 @@ function App() {
         console.log("component is mounted");
         fetchStudents();
     }, []);
+
 
     const renderStudents = () => {
         if (fetching) {
@@ -167,9 +180,17 @@ function App() {
                 setShowDrawer={setShowDrawer}
                 fetchStudents={fetchStudents}
             />
+            <StudentDrawerUpdateForm
+                showUpdateDrawer={showUpdateDrawer}
+                setShowUpdateDrawer={setShowUpdateDrawer}
+                fetchStudents={fetchStudents}
+                editingStudent={editingStudent}
+            />
             <Table
                 dataSource={students}
-                columns={columns(fetchStudents)}
+                columns={columns(fetchStudents,
+                    showUpdateDrawer, setShowUpdateDrawer,
+                    setEditingStudent)}
                 bordered
                 title={() =>
                     <>
