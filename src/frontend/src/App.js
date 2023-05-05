@@ -253,7 +253,7 @@ function App() {
                     <a
                         rel="noopener noreferrer"
                         target="_blank"
-                        href="https://www.chuangxinlin.com/">
+                        href="https://www.linkedin.com/in/chuangxin-lin/">
                         Learn more about me
                     </a>
                 </Divider>
