@@ -12,7 +12,7 @@ Summary:
 
 Check more on this [YouTue Video Demo](https://www.youtube.com/watch?v=5Z_WmGlaX_s).
 
-You can interact with the website host [here](http://springbootreactfullstack-env.eba-enb6wnfp.us-east-1.elasticbeanstalk.com), although this link may be obsolete in the future.
+You can interact with the website hosted [here](http://springbootreactfullstack-env.eba-enb6wnfp.us-east-1.elasticbeanstalk.com), although this link may be obsolete in the future.
 
 ## Important Packages Version
 * node v16.17.1
